@@ -42,12 +42,19 @@ sock = socket.socket(socket.AF_INET, # Internet
                         socket.SOCK_DGRAM) # UDP
 
 salida = True
+sqnum = 1
 while(salida):
     msg = input()
 
     if msg == "{quit}":
         salida = False
 
+    mensaje=struct.pack('!HHII',0x4100,sqnum,str(time.ctime()),0)
+    sqnum += 1
+    print ("El mensaje empaquetado es "+str(mensaje))
+
+
+    aux=struct.unpack('!HHII',mensaje)
     sock.sendto(str.encode(msg), (ipDest, int(portDest)))
 
 
