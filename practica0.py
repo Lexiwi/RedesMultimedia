@@ -49,13 +49,11 @@ while(salida):
     if msg == "{quit}":
         salida = False
 
-    mensaje=struct.pack('!HHII',0x4100,sqnum,str(time.ctime()),0)
+    cabecera = struct.pack('!HHII',0x4100,sqnum, int(time.time()),0)
     sqnum += 1
-    print ("El mensaje empaquetado es "+str(mensaje))
 
-
-    aux=struct.unpack('!HHII',mensaje)
-    sock.sendto(str.encode(msg), (ipDest, int(portDest)))
+    coso = str.encode(msg)
+    sock.sendto(cabecera + coso, (ipDest, int(portDest)))
 
 
 #Llamando a este metodo le decimos a la clase hilo que pare su ejecucin
