@@ -25,6 +25,9 @@ class hilo(threading.Thread):
             print(data.decode())
             print("\n")
 
+    def parar(self):
+        self.seguir=False
+
 
 #Inicializamos el hilo
 h = hilo()
@@ -45,7 +48,7 @@ while(salida):
     if msg == "{quit}":
         salida = False
 
-    sock.sendto(msg.str.encode(), (ipDest, portDest))
+    sock.sendto(str.encode(msg), (ipDest, int(portDest)))
 
 
 #Llamando a este metodo le decimos a la clase hilo que pare su ejecucin
