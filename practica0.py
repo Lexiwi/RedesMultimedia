@@ -3,7 +3,7 @@ import threading
 import time
 import socket
 
-IP = "150.244.66.53"
+IP = "127.0.0.1"
 PORT = 5004
 
 class hilo(threading.Thread):
@@ -49,11 +49,11 @@ while(salida):
     if msg == "{quit}":
         salida = False
 
-    cabecera = struct.pack('!HHII',0x4100,sqnum, int(time.time()),0)
-    sqnum += 1
-
-    coso = str.encode(msg)
-    sock.sendto(cabecera + coso, (ipDest, int(portDest)))
+    else:
+        cabecera = struct.pack('!HHII',0x8014,sqnum, int(time.time()),0)
+        sqnum += 1
+        mensaje = str.encode(msg)
+        sock.sendto(cabecera + mensaje, (ipDest, int(portDest)))
 
 
 #Llamando a este metodo le decimos a la clase hilo que pare su ejecucin
