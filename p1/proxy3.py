@@ -14,18 +14,21 @@ portDest = sys.argv[4]
 perdidas = sys.argv[5]
 retMin = sys.argv[6]
 retMax = sys.argv[7]
-mu = (retMin+retMax)/2
-sigma = (mu+retMax)/3
+mu = (int(retMin)+int(retMax))/2
+sigma = (mu+int(retMax))/3
 
 
 class hilo(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
-    def calcula(self, perdidas, retMin, retMax, addrDest, portDest, data, sock):
-        umbral = random.gauss(mu, sigma)
+    def calcula(self, data, sock):
+        umbral = random.random()
         if(umbral > float(perdidas)):
-            time.sleep((random.uniform(int(retMin), int(retMax)))/1000)
+            dormir = random.gauss(mu, sigma)
+            while (dormir < float(retMin)) and (dormir > float(retMax)):
+                dormir = random.gauss(mu, sigma)
+            time.sleep(dormir/1000)
             sock.sendto(data, (addrDest, int(portDest)))
 
 

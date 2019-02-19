@@ -4,16 +4,6 @@ import socket
 import sys
 import random
 
-class hilo(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-
-    def calcula(self, perdidas, retMin, retMax, addrDest, portDest, data, sock):
-        umbral = random.random()
-        if(umbral > float(perdidas)):
-            time.sleep((random.uniform(int(retMin), int(retMax)))/1000)
-            sock.sendto(data, (addrDest, int(portDest)))
-
 
 TAMANO_DEL_BUFFER = 100000
 
@@ -24,6 +14,18 @@ portDest = sys.argv[4]
 perdidas = sys.argv[5]
 retMin = sys.argv[6]
 retMax = sys.argv[7]
+
+
+class hilo(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+
+    def calcula(self, data, sock):
+        umbral = random.random()
+        if(umbral > float(perdidas)):
+            time.sleep((random.uniform(int(retMin), int(retMax)))/1000)
+            sock.sendto(data, (addrDest, int(portDest)))
+
 
 sockRecibir = socket.socket(socket.AF_INET, # Internet
                         socket.SOCK_DGRAM) # UDP
@@ -39,4 +41,4 @@ while True:
     # Se pone el servidor a la escucha
     data, addr = sockRecibir.recvfrom(TAMANO_DEL_BUFFER)
     h = hilo()
-    h.calcula(perdidas, retMin, retMax, addrDest, portDest, data, sockEnviar)
+    h.calcula(data, sockEnviar)
