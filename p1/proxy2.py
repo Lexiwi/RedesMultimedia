@@ -23,7 +23,8 @@ class hilo(threading.Thread):
     def calcula(self, data, sock):
         umbral = random.random()
         if(umbral > float(perdidas)):
-            time.sleep((random.uniform(int(retMin), int(retMax)))/1000)
+            sleep = random.uniform(int(retMin), int(retMax))
+            time.sleep(sleep/1000)
             sock.sendto(data, (addrDest, int(portDest)))
 
 
