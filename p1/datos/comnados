@@ -1,0 +1,6 @@
+#Comandos para eleminar los tiempos repetidos y ver cuantas veces aparece
+sed 's/\s/\n/g' DestinoParseado.txt | sort | uniq -c | sort -n >> ReceptorGrafica.txt
+
+#Comando para eliminar tabulaciones del principio
+sed -i -e 's/^[ \t]*//' ReceptorGrafica.txt 
+
