@@ -26,7 +26,7 @@ class hilo(threading.Thread):
         umbral = random.random()
         if(umbral > float(perdidas)):
             dormir = random.gauss(mu, sigma)
-            while (dormir < float(retMin)) and (dormir > float(retMax)):
+            while ((dormir < float(retMin)) and (dormir > float(retMax)) or dormir < 0):
                 dormir = random.gauss(mu, sigma)
             time.sleep(dormir/1000)
             sock.sendto(data, (addrDest, int(portDest)))
