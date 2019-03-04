@@ -1,1 +1,0 @@
-function cleanRadios(radioname){var allRadios=document.getElementsByName(radioname);for(x=0;x<allRadios.length;x++)if(allRadios[x].checked){document.getElementById(allRadios[x].id).checked=false;document.getElementById(allRadios[x].id).removeAttribute("checked")}}
