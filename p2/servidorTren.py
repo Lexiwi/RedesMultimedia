@@ -23,6 +23,14 @@ packet_list=[]
 B_MASK=0xFFFFFFFF
 DECENASMICROSECS=100000
 
+#Lista de tiempos de llegada
+list_llegada = []
+#Lista de retardos
+list_retardo = []
+#Lista de ancho de banda
+list_AB = []
+
+
 if __name__ == "__main__":
 	if len(sys.argv)!=3:
 		print ('Error en los argumentos:\npython servidorTren.py ip_escucha puerto_escucha\n')
@@ -48,9 +56,14 @@ if __name__ == "__main__":
 		except socket.timeout:
 			break
 	npackets=0
-	maxReception = 0
-	minReception = 99999999
-	totalReception = 0
+	
+        #Lista de tiempos de llegada
+        tms_llegada = []
+        #Lista de retardos
+        tms_retardos=[]
+        #Lista de ancho de banda
+	list_AB = []
+
 	for packet in packet_list:
 		#Para cada paquete recibido extraemos de la cabecera
 		#cada uno de los campos necesarios para hacer los cálculos
@@ -72,16 +85,7 @@ if __name__ == "__main__":
 		
 		print ('Retardo instantaneo en un sentido (s): ',(reception_time_trunc-send_time_trunc)/DECENASMICROSECS)
 
-		if((reception_time_trunc-send_time_trunc)/DECENASMICROSECS > maxReception):
-			maxReception = (reception_time_trunc-send_time_trunc)/DECENASMICROSECS
-
-		if((reception_time_trunc-send_time_trunc)/DECENASMICROSECS < minReception):
-			minReception = (reception_time_trunc-send_time_trunc)/DECENASMICROSECS
 		
-		totalReception += (reception_time_trunc-send_time_trunc)/DECENASMICROSECS
-
-		print ('Ancho de banda instantaneo en un sentido (B/s): ',)
-
 		###########################PRÁCTICA##############################################
 		#                                                                               #
 		# Añadir cálculos necesarios para obtener ancho de banda (instantáneo,medio,    #
@@ -90,15 +94,44 @@ if __name__ == "__main__":
 		#         (o decenas de microsegundos, segun se quiera ver)                     #
 		# a la hora de calcular retardos se debe tener en cuenta                        #
 		#################################################################################
-	print ('Retardo medio en un sentido (s): ',totalReception/npackets)
-	print ('Retardo maximo en un sentido (s): ',maxReception)
-	print ('Retardo minimo en un sentido (s): ',minReception)
+
+                #Guardamos en list_llegada el tiempo truncado del paquete(segundos.microsegundos)
+                list_llegada.append(reception_time)
+
+                #Podemos calcular el ancho de banda a partir del segundo paquete recibido
+                if (npackets > 1):
+                    #Tamanio total a medir
+                    tamTotal = (len(data)+cab)*8
+                    #Calculamos el ancho de banda instantaneo
+                    ABInstantaneo = tamTotal / (list_llegada[-1] - list_llegada[-2])
+                    #Anyadimos el ancho de banda calculado a la lista de ancho de bandas
+                    list_AB.append(ABInstantaneo)
+                    print ('Ancho de banda instantaneo: ',ABInstantaneo)
+
+                #Guardamos en la lista el retardo del paquete
+                retardoInstantaneo = (reception_time_trunc - send_time_trunc)/DECENASMICROSECS
+                list_retardo.append(retardoInstantaneo)
+                print ('Retardo instantaneo: ', retardoInstantaneo)
+
+
+        #Calculamos el retardo y ancho de banda medio del tren
+        AB_medio = (npackets - 1)*tamTotal / sum(list_AB)
+        retardo_medio = sum(list_retardo) / npackets
+
+        print('Ancho de banda medio: ', AB_medio)
+        print('Ancho de banda maximo: ', max(list_AB))
+        print('Ancho de banda minimo: ', min(list_AB))
+
+	print ('Retardo medio en un sentido : ', retardo_medio)
+	print ('Retardo maximo en un sentido : ', max(list_retardos))
+	print ('Retardo minimo en un sentido : ', min(list_retardos))
 	
 	###########################PRÁCTICA##############################################
 	#                                                                               #
 	# Añadir cálculos necesarios para obtener pérdida de paquetes y variación del   #
 	# retardo                                                                       #
 	#################################################################################
+        #ME QUEDE AQUI
 	packetLoss=0
 	print('Perdida de paquetes: ',packetLoss)
 	jitter=0 

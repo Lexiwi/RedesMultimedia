@@ -1,62 +1,49 @@
-import struct
-import threading
-import time
+######################
+#	clienteTren.py   #
+#	Prácticas RM     #
+######################
+
+import sys
 import socket
+import struct
+import time
 
-IP = "127.0.0.1"
-PORT = 5004
+MAX_ETHERNET_DATA=1500
+MIN_ETHERNET_DATA=46
+ETH_HDR_SIZE=14+4+8 # MAC header + CRC + Preamble
+IP_HDR_SIZE=20
+UDP_HDR_SIZE=8
+RTP_HDR_SIZE=12
 
-class hilo(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self.seguir=True
+B_MASK=0xFFFFFFFF
+DECENASMICROSECS=100000
 
-    def run(self):
-        self.abrirServidor()
-
-    def abrirServidor(self):
-        # Se crea un socket para recibir (servidor)
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
-        sock.bind((IP, PORT))
-        while self.seguir == True:
-            # Se pone el servidor a la escucha
-            data, addr = sock.recvfrom(2048) # Tamanio del buffer de recepcion
-            print(time.strftime("%x %X", time.gmtime())," <",addr,">: ")
-            print(data.decode())
-            print("\n")
-
-    def parar(self):
-        self.seguir=False
-
-
-#Inicializamos el hilo
-h = hilo()
-#Llamando a este metodo inciamos la ejecucion del hilo y se ejecuta el codigo contenido en el metodo run
-h.start()
-
-ipDest = input("Introduce IP del destinatario: ")
-portDest = input("Introduce puerto del destinatario: ")
-
-# Se crea un socket
-sock = socket.socket(socket.AF_INET, # Internet
-                        socket.SOCK_DGRAM) # UDP
-
-salida = True
-sqnum = 1
-while(salida):
-    msg = input()
-
-    if msg == "{quit}":
-        salida = False
-
-    else:
-        cabecera = struct.pack('!HHII',0x8014,sqnum, int(time.time()),0)
-        sqnum += 1
-        mensaje = str.encode(msg)
-        sock.sendto(cabecera + mensaje, (ipDest, int(portDest)))
+if __name__ == "__main__":
+	if len(sys.argv)!=5:
+		print ('Error en los argumentos:\npython clienteTren.py ip_destino puerto_destino longitud_tren longitud_datos\n')
+		exit(-1)
+	
+	dstIP=sys.argv[1]
+	dstPort=int(sys.argv[2])
+	addr=(dstIP,dstPort)
+	trainLength=int(sys.argv[3])
+	dataLength=int(sys.argv[4])
+	
+	if dataLength+IP_HDR_SIZE+UDP_HDR_SIZE+RTP_HDR_SIZE>MAX_ETHERNET_DATA or dataLength+IP_HDR_SIZE+UDP_HDR_SIZE+RTP_HDR_SIZE<MIN_ETHERNET_DATA :
+		# Se controla si la trama sería inferior al tamaño minimo, o bien tan grande que habría que fragmentarla, estropeando la medida
+		print('Tamaño de datos incorrecto')
+		exit(0)
+	sock_send= socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+	#generar un array de datos de longitud dataLength con el caracter 0 
+	data=('0'*(dataLength)).encode()
+	seq_number=0
 
 
-#Llamando a este metodo le decimos a la clase hilo que pare su ejecucin
-h.parar()
-#Con esta instruccion esperamos a que acabe el hilo
-h.join()
+	for i in range(0,trainLength):
+		#usamos la longitud del tren como identificador de fuente. De esta manera en destino podemos saber la
+		#longitud original del tren. En el campo timestamp (32bits) sólo podemos enviar segundos y 
+		#centésimas de milisegundos (o decenas de microsegundos, segun se quiera ver) truncados a 32bits
+		message=struct.pack('!HHII',0x8014,seq_number, int(time.time()*DECENASMICROSECS)&B_MASK,trainLength)+data
+		sock_send.sendto(message,addr)
+		seq_number+=1
+
