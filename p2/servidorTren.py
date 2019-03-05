@@ -47,9 +47,10 @@ if __name__ == "__main__":
 	sock_listen.settimeout(MAX_WAIT_TIME)
 	
 
-	if (ipListen != "127.0.0.1")
+	if (ipListen != "127.0.0.1"):
 		#Realizamos esto para mediciones mas exactas
 		tamCabeceras += ETH_HDR_SIZE
+
 	#Recibimos los paquetes y salimos del bucle cuando no se reciban paquetes en MAX_WAIT_TIME segundos
 	while True:
 		try:
@@ -76,14 +77,14 @@ if __name__ == "__main__":
 		#ATENCIÓN: El tiempo de recepción está en formato: segundos.microsegundos
 		#Usar este tiempo para calcular los anchos de banda
 		reception_time=packet[1]
-		npackets+=1 #Media
+		npackets+=1
 		#Truncamos el tiempo de recepción a centésimas de milisegundos 
 		#(o decenas de microsegundos, segun se quiera ver) y 32 bits
 		#para poder calcular el OWD en la misma base en que está eñ tiempo
 		#de envío del paquete
 		reception_time_trunc=int(reception_time*DECENASMICROSECS)&B_MASK
 		
-		print ('Retardo instantaneo en un sentido (s): ', (reception_time_trunc-send_time_trunc)/DECENASMICROSECS)
+		print ('\nRetardo instantaneo en un sentido (s): ', (reception_time_trunc-send_time_trunc)/DECENASMICROSECS)
 
 		
 		###########################PRÁCTICA##############################################
@@ -95,36 +96,35 @@ if __name__ == "__main__":
 		# a la hora de calcular retardos se debe tener en cuenta                        #
 		#################################################################################
 
-                #Guardamos en list_llegada el tiempo (segundos.microsegundos)
-                list_llegada.append(reception_time)
+		#Guardamos en la lista el retardo del paquete
+		list_retardo.append((reception_time_trunc-send_time_trunc)/DECENASMICROSECS)
 
-                #Podemos calcular el ancho de banda a partir del segundo paquete recibido
-                if (npackets > 1):
-                    #Tamanio total a medir
-                    tamTotal = (len(data)+tamCabeceras)*8
-                    #Calculamos el ancho de banda instantaneo
-                    ABInstantaneo = tamTotal / (list_llegada[-1] - list_llegada[-2]))
-                    #Anyadimos el ancho de banda calculado a la lista de ancho de bandas
-                    list_AB.append(ABInstantaneo)
-                    print ('Ancho de banda instantaneo: ', ABInstantaneo)
+		#Guardamos en list_llegada el tiempo (segundos.microsegundos)
+		list_llegada.append(reception_time)
 
-                #Guardamos en la lista el retardo del paquete
-                retardoInstantaneo = (reception_time_trunc - send_time_trunc)/DECENASMICROSECS
-                list_retardo.append(retardoInstantaneo)
-                print ('Retardo instantaneo: ', retardoInstantaneo)
+		#Podemos calcular el ancho de banda a partir del segundo paquete recibido
+		if (npackets > 1):
+			#Tamanio total a medir
+			tamTotal = (len(data)+tamCabeceras)*8
+			#Calculamos el ancho de banda instantaneo
+			ABInstantaneo = tamTotal / (list_llegada[-1] - list_llegada[-2])
+			#Anyadimos el ancho de banda calculado a la lista de ancho de bandas
+			list_AB.append(ABInstantaneo)
+			print ('Ancho de banda instantaneo (Mb/s): ', ABInstantaneo/pow(10, 6))
 
 
-        #Calculamos el retardo y ancho de banda medio del tren
-        AB_medio = (npackets - 1)*tamTotal / sum(list_AB)
-        retardo_medio = sum(list_retardo) / npackets
+	#Calculamos el ancho de banda medio del tren
+	AB_medio = (npackets - 1)*((len(data)+tamCabeceras)*8) / sum(list_AB)
 
-        print('Ancho de banda medio: ', AB_medio)
-        print('Ancho de banda maximo: ', max(list_AB))
-        print('Ancho de banda minimo: ', min(list_AB))
+	print('\nAncho de banda medio (Mb/s): ', stast.mean(list_AB)/pow(10, 6))
+	#Puede salir una ancho de banda medio menor que el minimo por la formula
+	print('Ancho de banda medio con formula (Mb/s): ', AB_medio/pow(10, 6))
+	print('Ancho de banda maximo (Mb/s): ', max(list_AB)/pow(10, 6))
+	print('Ancho de banda minimo (Mb/s): ', min(list_AB)/pow(10, 6))
 
-	print ('Retardo medio en un sentido : ', retardo_medio)
-	print ('Retardo maximo en un sentido : ', max(list_retardo))
-	print ('Retardo minimo en un sentido : ', min(list_retardo))
+	print ('\nRetardo medio en un sentido (s): ', stast.mean(list_retardo))
+	print ('Retardo maximo en un sentido (s): ', max(list_retardo))
+	print ('Retardo minimo en un sentido (s): ', min(list_retardo))
 	
 	###########################PRÁCTICA##############################################
 	#                                                                               #
@@ -133,11 +133,11 @@ if __name__ == "__main__":
 	#################################################################################
 
 	packetLoss=0
-	packetLoss = len(list_retardo) / npackets
-	print('Perdida de paquetes: ', packetLoss)
+	packetLoss = ((trainLength - len(packet_list))/ trainLength) * 100
+	print('\nPerdida de paquetes (%): ', packetLoss)
 	jitter=0
-	jitter = stats.variance(list_retardo) 
-	print('Variación del retardo: ', jitter)
+	jitter = stast.variance(list_retardo) 
+	print('Variación del retardo (s): ', jitter)
 	#################################################################################
 
 
