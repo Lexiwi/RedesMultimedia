@@ -8,6 +8,7 @@ import sys
 import socket
 import struct
 import time
+import statistics as stast
 
 MAX_ETHERNET_DATA=1500
 MIN_ETHERNET_DATA=46
@@ -29,6 +30,7 @@ list_llegada = []
 list_retardo = []
 #Lista de ancho de banda
 list_AB = []
+tamCabeceras = IP_HDR_SIZE + UDP_HDR_SIZE + RTP_HDR_SIZE
 
 
 if __name__ == "__main__":
@@ -44,6 +46,10 @@ if __name__ == "__main__":
 	sock_listen.bind((ipListen,portListen))
 	sock_listen.settimeout(MAX_WAIT_TIME)
 	
+
+	if (ipListen != "127.0.0.1")
+		#Realizamos esto para mediciones mas exactas
+		tamCabeceras += ETH_HDR_SIZE
 	#Recibimos los paquetes y salimos del bucle cuando no se reciban paquetes en MAX_WAIT_TIME segundos
 	while True:
 		try:
@@ -55,14 +61,8 @@ if __name__ == "__main__":
 
 		except socket.timeout:
 			break
+
 	npackets=0
-	
-        #Lista de tiempos de llegada
-        tms_llegada = []
-        #Lista de retardos
-        tms_retardos=[]
-        #Lista de ancho de banda
-	list_AB = []
 
 	for packet in packet_list:
 		#Para cada paquete recibido extraemos de la cabecera
@@ -83,7 +83,7 @@ if __name__ == "__main__":
 		#de envío del paquete
 		reception_time_trunc=int(reception_time*DECENASMICROSECS)&B_MASK
 		
-		print ('Retardo instantaneo en un sentido (s): ',(reception_time_trunc-send_time_trunc)/DECENASMICROSECS)
+		print ('Retardo instantaneo en un sentido (s): ', (reception_time_trunc-send_time_trunc)/DECENASMICROSECS)
 
 		
 		###########################PRÁCTICA##############################################
@@ -95,18 +95,18 @@ if __name__ == "__main__":
 		# a la hora de calcular retardos se debe tener en cuenta                        #
 		#################################################################################
 
-                #Guardamos en list_llegada el tiempo truncado del paquete(segundos.microsegundos)
+                #Guardamos en list_llegada el tiempo (segundos.microsegundos)
                 list_llegada.append(reception_time)
 
                 #Podemos calcular el ancho de banda a partir del segundo paquete recibido
                 if (npackets > 1):
                     #Tamanio total a medir
-                    tamTotal = (len(data)+cab)*8
+                    tamTotal = (len(data)+tamCabeceras)*8
                     #Calculamos el ancho de banda instantaneo
-                    ABInstantaneo = tamTotal / (list_llegada[-1] - list_llegada[-2])
+                    ABInstantaneo = tamTotal / (list_llegada[-1] - list_llegada[-2]))
                     #Anyadimos el ancho de banda calculado a la lista de ancho de bandas
                     list_AB.append(ABInstantaneo)
-                    print ('Ancho de banda instantaneo: ',ABInstantaneo)
+                    print ('Ancho de banda instantaneo: ', ABInstantaneo)
 
                 #Guardamos en la lista el retardo del paquete
                 retardoInstantaneo = (reception_time_trunc - send_time_trunc)/DECENASMICROSECS
@@ -123,19 +123,21 @@ if __name__ == "__main__":
         print('Ancho de banda minimo: ', min(list_AB))
 
 	print ('Retardo medio en un sentido : ', retardo_medio)
-	print ('Retardo maximo en un sentido : ', max(list_retardos))
-	print ('Retardo minimo en un sentido : ', min(list_retardos))
+	print ('Retardo maximo en un sentido : ', max(list_retardo))
+	print ('Retardo minimo en un sentido : ', min(list_retardo))
 	
 	###########################PRÁCTICA##############################################
 	#                                                                               #
 	# Añadir cálculos necesarios para obtener pérdida de paquetes y variación del   #
 	# retardo                                                                       #
 	#################################################################################
-        #ME QUEDE AQUI
+
 	packetLoss=0
-	print('Perdida de paquetes: ',packetLoss)
-	jitter=0 
-	print('Variación del retardo: ',jitter)
+	packetLoss = len(list_retardo) / npackets
+	print('Perdida de paquetes: ', packetLoss)
+	jitter=0
+	jitter = stats.variance(list_retardo) 
+	print('Variación del retardo: ', jitter)
 	#################################################################################
 
 
