@@ -1,0 +1,14 @@
+Ancho de banda medio (Mb/s):  178.51204591930724
+Ancho de banda medio con formula (Mb/s):  7.977052711858388e-12
+Ancho de banda maximo (Mb/s):  199.08962986666668
+Ancho de banda minimo (Mb/s):  10.552453879858657
+
+Retardo medio en un sentido (s):  -0.0111112
+Retardo maximo en un sentido (s):  -0.01078
+Retardo minimo en un sentido (s):  -0.0115
+
+Perdida de paquetes (%):  0.0
+Variación del retardo (s):  4.4794505050505044e-08
+
+
+

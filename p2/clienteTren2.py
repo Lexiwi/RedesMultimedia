@@ -19,8 +19,8 @@ B_MASK=0xFFFFFFFF
 DECENASMICROSECS=100000
 
 if __name__ == "__main__":
-	if (len(sys.argv) != 5 or len(sys.argv) != 6):
-		print ('Error en los argumentos:\npython clienteTren.py ip_destino puerto_destino longitud_tren longitud_datos [<tasa_binaria>]\n')
+	if (len(sys.argv) < 5 or len(sys.argv) > 6):
+		print ('Error en los argumentos:\npython clienteTren2.py ip_destino puerto_destino longitud_tren longitud_datos [<tasa_binaria>]\n')
 		exit(-1)
 	
 	dstIP = sys.argv[1]
@@ -46,7 +46,8 @@ if __name__ == "__main__":
 		#longitud original del tren. En el campo timestamp (32bits) sólo podemos enviar segundos y 
 		#centésimas de milisegundos (o decenas de microsegundos, segun se quiera ver) truncados a 32bits
 		message=struct.pack('!HHII',0x8014,seq_number, int(time.time()*DECENASMICROSECS)&B_MASK,trainLength)+data
-		time.sleep(dataLength/tasa)
+		if(len(sys.argv) == 6)
+			time.sleep(dataLength/tasa)
 		sock_send.sendto(message,addr)
 		seq_number+=1
 

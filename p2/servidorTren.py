@@ -82,7 +82,8 @@ if __name__ == "__main__":
 		#(o decenas de microsegundos, segun se quiera ver) y 32 bits
 		#para poder calcular el OWD en la misma base en que está eñ tiempo
 		#de envío del paquete
-		reception_time_trunc=int(reception_time*DECENASMICROSECS)&B_MASK
+		reception_time_trunc=int((reception_time-(-26.816249823570253))*DECENASMICROSECS)&B_MASK
+		#reception_time_trunc=int(reception_time*DECENASMICROSECS)&B_MASK
 		
 		print ('\nRetardo instantaneo en un sentido (s): ', (reception_time_trunc-send_time_trunc)/DECENASMICROSECS)
 
@@ -114,7 +115,7 @@ if __name__ == "__main__":
 
 
 	#Calculamos el ancho de banda medio del tren
-	AB_medio = (npackets - 1)*((len(data)+tamCabeceras)*8) / sum(list_AB)
+	AB_medio = (npackets - 1)*((len(data)+tamCabeceras)*8) / (list_llegada[-1] - list_llegada[0])
 
 	print('\nAncho de banda medio (Mb/s): ', stast.mean(list_AB)/pow(10, 6))
 	#Puede salir una ancho de banda medio menor que el minimo por la formula

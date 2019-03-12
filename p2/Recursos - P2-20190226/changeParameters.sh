@@ -30,4 +30,3 @@ sudo ethtool -K $1 gro off
 sudo ethtool -K $1 lro off
 sudo ethtool -A $1 rx off
 sudo ethtool -A $1 tx off
-
