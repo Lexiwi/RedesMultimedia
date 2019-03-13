@@ -82,8 +82,8 @@ if __name__ == "__main__":
 		#(o decenas de microsegundos, segun se quiera ver) y 32 bits
 		#para poder calcular el OWD en la misma base en que está eñ tiempo
 		#de envío del paquete
-		reception_time_trunc=int((reception_time-(-26.816249823570253))*DECENASMICROSECS)&B_MASK
-		#reception_time_trunc=int(reception_time*DECENASMICROSECS)&B_MASK
+		#reception_time_trunc=int((reception_time-(-26.816249823570253))*DECENASMICROSECS)&B_MASK
+		reception_time_trunc=int(reception_time*DECENASMICROSECS)&B_MASK
 		
 		print ('\nRetardo instantaneo en un sentido (s): ', (reception_time_trunc-send_time_trunc)/DECENASMICROSECS)
 

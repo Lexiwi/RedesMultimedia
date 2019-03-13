@@ -6,7 +6,7 @@ import random
 import sys
 
 # Declaracion de variables 
-IP = "127.0.0.1"
+IP = "150.244.65.81"
 PORT = 5004
 ESPERA = 10 #s
 REPETICIONES = 5+1 # El primer paquete no se usa para la medida, pues suele falsear el resultado

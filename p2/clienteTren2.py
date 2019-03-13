@@ -46,7 +46,7 @@ if __name__ == "__main__":
 		#longitud original del tren. En el campo timestamp (32bits) sólo podemos enviar segundos y 
 		#centésimas de milisegundos (o decenas de microsegundos, segun se quiera ver) truncados a 32bits
 		message=struct.pack('!HHII',0x8014,seq_number, int(time.time()*DECENASMICROSECS)&B_MASK,trainLength)+data
-		if(len(sys.argv) == 6)
+		if(len(sys.argv) == 6):
 			time.sleep(dataLength/tasa)
 		sock_send.sendto(message,addr)
 		seq_number+=1
