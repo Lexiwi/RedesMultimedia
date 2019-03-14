@@ -114,11 +114,10 @@ if __name__ == "__main__":
 			print ('Ancho de banda instantaneo (Mb/s): ', ABInstantaneo/pow(10, 6))
 
 
-	#Calculamos el ancho de banda medio del tren
+	#Factor de dispersion
 	AB_medio = (npackets - 1)*((len(data)+tamCabeceras)*8) / (list_llegada[-1] - list_llegada[0])
 
 	print('\nAncho de banda medio (Mb/s): ', stast.mean(list_AB)/pow(10, 6))
-	#Puede salir una ancho de banda medio menor que el minimo por la formula
 	print('Ancho de banda medio con formula (Mb/s): ', AB_medio/pow(10, 6))
 	print('Ancho de banda maximo (Mb/s): ', max(list_AB)/pow(10, 6))
 	print('Ancho de banda minimo (Mb/s): ', min(list_AB)/pow(10, 6))
