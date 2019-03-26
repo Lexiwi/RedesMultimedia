@@ -6,11 +6,11 @@ DEBUG :=
 
 CXX := g++ -Wall
 AR  := ar
-MOC := /usr/bin/moc-qt4
-QT4_INC := -DQT_SHARED -I/usr/include/qt4 -I/usr/include/qt4/QtUiTools -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtXml  
-QT4_LIB := -lQtUiTools -lQtGui -lQtXml -lQtCore  
-QT4_INC_NET := -I/usr/include/qt4/QtNetwork
-QT4_LIB_NET := -lQtNetwork
+MOC := 
+QT4_INC := 
+QT4_LIB := 
+QT4_INC_NET := 
+QT4_LIB_NET := 
 DEFS:=
 
 INCLUDES:=-I. -I. -I../.. $(QT4_INC)
@@ -37,8 +37,8 @@ LOCALLIBS =
 COMPILE = $(CXX) $(DEFS) $(DEBUG) $(INCLUDES) $(CFLAGS)
 LINK = $(CXX) $(LDFLAGS)
 
-ifneq (x040806,x)
-DEFS := $(DEFS) -DQT4_VER=040806
+ifneq (x,x)
+DEFS := $(DEFS) -DQT4_VER=
 endif
 
 prefix = /usr/local

@@ -134,25 +134,25 @@ while [ "$#" != 0 ]; do
 	    echo "no"
 	    ;;
 	--param=QT4_VER)
-	    echo "040806"
+	    echo ""
 	    ;;
 	--param=QT4_MOC)
-	    echo "/usr/bin/moc-qt4"
+	    echo ""
 	    ;;
 	--param=QT4_LIB_NET)
-	    echo "-lQtNetwork"
+	    echo ""
 	    ;;
 	--param=QT4_INC_NET)
-	    echo "-I/usr/include/qt4/QtNetwork"
+	    echo ""
 	    ;;
 	--param=QT4_LIB)
-	    echo "-lQtUiTools -lQtGui -lQtXml -lQtCore  "
+	    echo ""
 	    ;;
 	--param=QT4_INC)
-	    echo "-DQT_SHARED -I/usr/include/qt4 -I/usr/include/qt4/QtUiTools -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtXml  "
+	    echo ""
 	    ;;
 	--param=HAVE_QT4)
-	    echo "yes"
+	    echo "no"
 	    ;;
 	--param=ZLIB_LIB)
 	    echo "-lz"
@@ -164,16 +164,16 @@ while [ "$#" != 0 ]; do
 	    echo "yes"
 	    ;;
 	--param=OPENSSL_VER)
-	    echo "1.0.1f"
+	    echo ""
 	    ;;
 	--param=OPENSSL_LIB)
-	    echo "-lssl -lcrypto  "
+	    echo ""
 	    ;;
 	--param=OPENSSL_INC)
-	    echo " "
+	    echo ""
 	    ;;
 	--param=HAVE_OPENSSL)
-	    echo "yes"
+	    echo "no"
 	    ;;
 	--param=H323_RUN)
 	    echo ""
@@ -215,19 +215,19 @@ while [ "$#" != 0 ]; do
 	    echo "no"
 	    ;;
 	--param=ISAC_INC)
-	    echo "-I/home/alumnos/e999999/Downloads/yate/libs/miniwebrtc/audio/coding_isac/main"
+	    echo "-I/home/alumnos/e336869/RedesMultimedia/p3/yate-5.5.0-1.compilado/yate/libs/miniwebrtc/audio/coding_isac/main"
 	    ;;
 	--param=HAVE_ISAC)
 	    echo "yes"
 	    ;;
 	--param=ILBCWR_INC)
-	    echo "-I/home/alumnos/e999999/Downloads/yate/libs/miniwebrtc/audio/coding_ilbc"
+	    echo "-I/home/alumnos/e336869/RedesMultimedia/p3/yate-5.5.0-1.compilado/yate/libs/miniwebrtc/audio/coding_ilbc"
 	    ;;
 	--param=HAVE_ILBCWR)
 	    echo "yes"
 	    ;;
 	--param=ILBC_INC)
-	    echo "-I/home/alumnos/e999999/Downloads/yate/libs/ilbc"
+	    echo "-I/home/alumnos/e336869/RedesMultimedia/p3/yate-5.5.0-1.compilado/yate/libs/ilbc"
 	    ;;
 	--param=HAVE_ILBC)
 	    echo "yes"
@@ -245,7 +245,7 @@ while [ "$#" != 0 ]; do
 	    echo "no"
 	    ;;
 	--param=HAVE_ALSA)
-	    echo "yes"
+	    echo "no"
 	    ;;
 	--param=HAVE_SOUNDCARD)
 	    echo "yes"
@@ -296,10 +296,10 @@ while [ "$#" != 0 ]; do
 	    echo "-lpq"
 	    ;;
 	--param=PGSQL_INC)
-	    echo ""
+	    echo "-I/usr/include/postgresql"
 	    ;;
 	--param=HAVE_PGSQL)
-	    echo "no"
+	    echo "yes"
 	    ;;
 	--param=HAVE_MACOSX_SUPPORT)
 	    echo "no"

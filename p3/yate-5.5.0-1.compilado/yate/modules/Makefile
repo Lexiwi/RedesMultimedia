@@ -13,14 +13,14 @@ YATE_REVISION:= 5968
 
 CC  := gcc -Wall
 CXX := g++ -Wall
-MOC := /usr/bin/moc-qt4
-QT4_INC := -DQT_SHARED -I/usr/include/qt4 -I/usr/include/qt4/QtUiTools -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtXml  
-QT4_LIB := -lQtUiTools -lQtGui -lQtXml -lQtCore  
-QT4_INC_NET := -I/usr/include/qt4/QtNetwork
-QT4_LIB_NET := -lQtNetwork
+MOC := 
+QT4_INC := 
+QT4_LIB := 
+QT4_INC_NET := 
+QT4_LIB_NET := 
 QT4_STATIC_MODULES :=
-HAVE_PGSQL := no
-PGSQL_INC := 
+HAVE_PGSQL := yes
+PGSQL_INC := -I/usr/include/postgresql
 PGSQL_LIB := -lpq
 HAVE_MYSQL := no
 MYSQL_INC := 
@@ -31,9 +31,9 @@ SQLITE_LIB :=
 HAVE_SPANDSP := no
 SPANDSP_INC := 
 SPANDSP_LIB := -lspandsp
-HAVE_OPENSSL := yes
-OPENSSL_INC :=  
-OPENSSL_LIB := -lssl -lcrypto  
+HAVE_OPENSSL := no
+OPENSSL_INC := 
+OPENSSL_LIB := 
 HAVE_ZLIB := yes
 ZLIB_INC := -I/usr/include
 ZLIB_LIB := -lz
@@ -112,7 +112,7 @@ ifneq (yes,no)
 PROGS := $(PROGS) client/osschan.yate
 endif
 
-ifneq (yes,no)
+ifneq (no,no)
 PROGS := $(PROGS) client/alsachan.yate
 endif
 
@@ -120,7 +120,7 @@ ifneq (no,no)
 PROGS := $(PROGS) client/coreaudio.yate
 endif
 
-ifneq (yes,no)
+ifneq (no,no)
 ifeq (no,no)
 PROGS := $(PROGS) qt4/updater.yate qt4/customtable.yate qt4/customtext.yate \
 	qt4/customtree.yate qt4/widgetlist.yate qt4/clientarchive.yate
@@ -364,15 +364,15 @@ server/lksctp.yate: EXTERNFLAGS =
 server/lksctp.yate: EXTERNLIBS = -lsctp
 
 ilbccodec.yate: ../libs/ilbc/libilbc.a
-ilbccodec.yate: LOCALFLAGS = -I/home/alumnos/e999999/Downloads/yate/libs/ilbc
+ilbccodec.yate: LOCALFLAGS = -I/home/alumnos/e336869/RedesMultimedia/p3/yate-5.5.0-1.compilado/yate/libs/ilbc
 ilbccodec.yate: LOCALLIBS = -L../libs/ilbc -lilbc
 
 ilbcwebrtc.yate: ../libs/miniwebrtc/libminiwebrtc.a
-ilbcwebrtc.yate: LOCALFLAGS = -I/home/alumnos/e999999/Downloads/yate/libs/miniwebrtc/audio/coding_ilbc -I../libs/miniwebrtc/audio/common/processing -I../libs/miniwebrtc
+ilbcwebrtc.yate: LOCALFLAGS = -I/home/alumnos/e336869/RedesMultimedia/p3/yate-5.5.0-1.compilado/yate/libs/miniwebrtc/audio/coding_ilbc -I../libs/miniwebrtc/audio/common/processing -I../libs/miniwebrtc
 ilbcwebrtc.yate: LOCALLIBS = -L../libs/miniwebrtc -lminiwebrtc
 
 isaccodec.yate: ../libs/miniwebrtc/libminiwebrtc.a
-isaccodec.yate: LOCALFLAGS = -I/home/alumnos/e999999/Downloads/yate/libs/miniwebrtc/audio/coding_isac/main -I../libs/miniwebrtc/audio/common/processing -I../libs/miniwebrtc
+isaccodec.yate: LOCALFLAGS = -I/home/alumnos/e336869/RedesMultimedia/p3/yate-5.5.0-1.compilado/yate/libs/miniwebrtc/audio/coding_isac/main -I../libs/miniwebrtc/audio/common/processing -I../libs/miniwebrtc
 isaccodec.yate: LOCALLIBS = -L../libs/miniwebrtc -lminiwebrtc
 
 gsmcodec.yate: EXTERNFLAGS = 
