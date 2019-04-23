@@ -122,3 +122,16 @@ protocol=jabber
 ;domain=example.com
 ;password=1234
 ;options=allowplainauth
+
+[sip_linphone_javi]
+enabled=yes
+protocol=sip
+username=granjavi
+description=Javi SIP account
+;interval=600
+authname= granjavi@sip.linphone.org
+password=1234
+domain= sip.linphone.org
+registrar= sip.linphone.org
+;outbound=10.0.0.1:5061
+;localaddress=192.168.0.1:5062
