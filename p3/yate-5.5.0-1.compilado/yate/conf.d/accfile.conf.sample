@@ -132,6 +132,19 @@ description=Javi SIP account
 authname= granjavi@sip.linphone.org
 password=1234
 domain= sip.linphone.org
+registrar= sip.linphon
+;outbound=10.0.0.1:5061
+;localaddress=192.168.0.1:5062
+
+[sip_linphone_jorge]
+enabled=yes
+protocol=sip
+username=georgegd
+description=Jorge SIP account
+;interval=600
+authname= georgegd@sip.linphone.org
+password=1234
+domain= sip.linphone.org
 registrar= sip.linphone.org
 ;outbound=10.0.0.1:5061
 ;localaddress=192.168.0.1:5062
